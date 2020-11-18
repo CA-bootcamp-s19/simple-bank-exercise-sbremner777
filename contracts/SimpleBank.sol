@@ -1,4 +1,4 @@
-SPDX-License-Identifier: GPL-3.0-or-later
+//SPDX-License-Identifier: GPL-3.0-or-later
 /*
     This exercise has been updated to use Solidity version 0.6.12
     Breaking changes from 0.5 to 0.6 can be found here: 
