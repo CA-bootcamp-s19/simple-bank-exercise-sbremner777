@@ -51,7 +51,7 @@ contract SimpleBank {
     // Typically, called when invalid data is sent
     // Added so ether sent to this contract is reverted if the contract fails
     // otherwise, the sender's money is transferred to contract
-    fallback() external payable {
+    function () external payable {
         revert();
     }
 
@@ -95,15 +95,17 @@ contract SimpleBank {
     /// @param withdrawAmount amount you want to withdraw
     /// @return The balance remaining for the user
     // Emit the appropriate event    
-    function withdraw(uint withdrawAmount) public returns (uint remainingBal) {
+    function withdraw(uint withdrawAmount) public returns (uint) {
         /* If the sender's balance is at least the amount they want to withdraw,
            Subtract the amount from the sender's balance, and try to send that amount of ether
            to the user attempting to withdraw. 
            return the user's balance.*/
-        if (withdrawAmount <= balances[msg.sender]) {
-            balances[msg.sender] -= withdrawAmount;
-            msg.sender.transfer(withdrawAmount);
-        }
+        require(withdrawAmount > 0);
+        require(withdrawAmount <= balances[msg.sender]);
+        require(enrolled[msg.sender] == true);
+
+        balances[msg.sender] -= withdrawAmount;
+        emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
         return balances[msg.sender];
     }
 
